@@ -16,7 +16,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
         raise HTTPException(status_code=400, detail="Usuario no encontrado")
     if not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(status_code=400, detail="Contraseña incorrecta")
-    if not user.aprobado:
+    if user.aprobado:
         raise HTTPException(status_code=403, detail="Cuenta no aprobada")
 
     access_token = create_access_token(data={"sub": user.email, "rol": user.rol})
